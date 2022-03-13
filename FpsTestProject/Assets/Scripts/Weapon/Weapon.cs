@@ -25,16 +25,11 @@ public abstract class Weapon:MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] protected PoolComponent BulletPrefab;
 
-    [Header("Audio Source")]
-    [SerializeField] protected AudioSource MainAudioSource;
-    [SerializeField] protected AudioSource ShootAudioSource;
-
-    [Header("Sound")]
-    [SerializeField] protected AudioClip ShootSound;
-    [SerializeField] protected AudioClip AimSound;
+    [Header("Particle System")]
+    [SerializeField] protected ParticleSystem MuzzleFlash;
 
     [Header("Animator")]
-    [SerializeField] protected Animator Animator;
+    [SerializeField] protected Animator ArmsAnimator;
 
     [Header("States")]
     protected bool IsReloading;

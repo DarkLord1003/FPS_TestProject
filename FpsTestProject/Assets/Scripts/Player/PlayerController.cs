@@ -322,7 +322,7 @@ public class PlayerController : MonoBehaviour
     private void CalculateAnimation()
     {
         _animator.SetFloat("Speed", _characterController.velocity.sqrMagnitude);
-        _animator.SetBool("isSprinting", _isSprinting);
+        _animator.SetBool("IsSprinting", _isSprinting);
 
     }
 

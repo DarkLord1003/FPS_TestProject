@@ -58,20 +58,19 @@ public class SniperWeapon : Weapon
 
     protected override void Shoot()
     {
-        if (_input.ShootIsTrigger && !IsReloading && !Animator.GetBool("isSprinting") && _canShoot && !OutOfAmmo)
+        if (_input.ShootIsTrigger && !IsReloading && !ArmsAnimator.GetBool("IsSprinting") && _canShoot && !OutOfAmmo)
         {
             if(Time.time > LastFired - 1 / WeaponSettings.FireRate)
             {
                 LastFired = Time.time;
                 CurrentAmmo--;
 
-                Animator.Play("Fire_Sniper", 0, 0f);
+                ArmsAnimator.Play("Sniper_Shoot", 0, 0f);
 
                 PoolComponent bullet = ObjectPool.GetObject("Bullet", BulletSpawnPoint.position, BulletSpawnPoint.rotation);
-
-                //ShootAudioSource.clip = ShootSound;
-                //ShootAudioSource.Play();
+                EventManager.Instance.PostNotification(Event_Type.Weapon_Recoil, this);
                 SoundManager.Instance.PlayAudio(AudioType.Weapon_Shoot);
+                MuzzleFlash.Play();
                 bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * WeaponSettings.BulletForce;
 
             }
@@ -80,7 +79,7 @@ public class SniperWeapon : Weapon
 
     private void AnimationStanceCheck()
     {
-        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Fire_Sniper"))
+        if (ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Shootr"))
         {
             _canShoot = false;
         }
@@ -89,7 +88,7 @@ public class SniperWeapon : Weapon
             _canShoot = true;
         }
 
-        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("ReloadOutOfAmmo_Sniper"))
+        if (ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_ReloadOutOfAmmo"))
         {
             IsReloading = true;
         }
@@ -105,7 +104,7 @@ public class SniperWeapon : Weapon
         {
             if (OutOfAmmo || CurrentAmmo < WeaponSettings.ClipSize)
             {
-                Animator.Play("ReloadOutOfAmmo_Sniper", 0, 0f);
+                ArmsAnimator.Play("Sniper_ReloadOutOfAmmo", 0, 0f);
 
                 CurrentAmmo = WeaponSettings.ClipSize;
                 OutOfAmmo = false;
@@ -128,11 +127,11 @@ public class SniperWeapon : Weapon
 
     private void CheckAiming()
     {
-        if (_input.AimingPressTrigger && !Animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Sniper"))
+        if (_input.AimingPressTrigger && !ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Running"))
         {
             _canAiming = true;
         }
-        else if(_input.AimingRealisedTrigger || Animator.GetCurrentAnimatorStateInfo(0).IsName("Running_Sniper"))
+        else if(_input.AimingRealisedTrigger || ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Running"))
         {
             _canAiming = false;
         }
