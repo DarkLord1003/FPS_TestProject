@@ -113,5 +113,11 @@ public static class ModelSettings
         public float BulletForce => _bulletForce;
     }
 
+    public enum ShootingType
+    {
+        Single,
+        Automatic
+    }
+
     #endregion
 }

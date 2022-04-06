@@ -134,6 +134,60 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootRealised"",
+                    ""type"": ""Button"",
+                    ""id"": ""97f2b90e-8cca-46f9-a54b-b5b38d27fee4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeShootType"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c5044a7-cb47-48f9-807f-3f60879779dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Alpha1"",
+                    ""type"": ""Button"",
+                    ""id"": ""14e6248c-49af-4b41-b6e4-df7cb728912c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Alpha2"",
+                    ""type"": ""Button"",
+                    ""id"": ""f14f2b9a-70ee-43cd-8412-b4bff367ae6e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Alpha3"",
+                    ""type"": ""Button"",
+                    ""id"": ""e03b62e4-be94-4e6b-96f7-e342db5bc769"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""86debe3f-b044-418f-b9dd-030d6126a76a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -367,6 +421,72 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d97d1cfd-7807-4c11-a331-7c118612d29c"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootRealised"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1904579e-77a8-402d-9000-906c290aed5d"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeShootType"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7aa14d8c-f94a-4fdb-8187-817e00c240ce"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Alpha1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04cf32ca-03d7-4cb3-9b1c-c2d1e6f74a5b"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Alpha2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""55355c3f-6e06-45bc-9548-60dd3b8c62c6"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Alpha3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c57821dd-321b-4093-840d-cef0b0d7e0f1"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -387,6 +507,12 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
+        m_Player_ShootRealised = m_Player.FindAction("ShootRealised", throwIfNotFound: true);
+        m_Player_ChangeShootType = m_Player.FindAction("ChangeShootType", throwIfNotFound: true);
+        m_Player_Alpha1 = m_Player.FindAction("Alpha1", throwIfNotFound: true);
+        m_Player_Alpha2 = m_Player.FindAction("Alpha2", throwIfNotFound: true);
+        m_Player_Alpha3 = m_Player.FindAction("Alpha3", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -458,6 +584,12 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Aim;
+    private readonly InputAction m_Player_ShootRealised;
+    private readonly InputAction m_Player_ChangeShootType;
+    private readonly InputAction m_Player_Alpha1;
+    private readonly InputAction m_Player_Alpha2;
+    private readonly InputAction m_Player_Alpha3;
+    private readonly InputAction m_Player_Use;
     public struct PlayerActions
     {
         private @DefaultInput m_Wrapper;
@@ -474,6 +606,12 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
+        public InputAction @ShootRealised => m_Wrapper.m_Player_ShootRealised;
+        public InputAction @ChangeShootType => m_Wrapper.m_Player_ChangeShootType;
+        public InputAction @Alpha1 => m_Wrapper.m_Player_Alpha1;
+        public InputAction @Alpha2 => m_Wrapper.m_Player_Alpha2;
+        public InputAction @Alpha3 => m_Wrapper.m_Player_Alpha3;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -519,6 +657,24 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Aim.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
                 @Aim.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
                 @Aim.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
+                @ShootRealised.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootRealised;
+                @ShootRealised.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootRealised;
+                @ShootRealised.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootRealised;
+                @ChangeShootType.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeShootType;
+                @ChangeShootType.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeShootType;
+                @ChangeShootType.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeShootType;
+                @Alpha1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha1;
+                @Alpha1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha1;
+                @Alpha1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha1;
+                @Alpha2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha2;
+                @Alpha2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha2;
+                @Alpha2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha2;
+                @Alpha3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha3;
+                @Alpha3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha3;
+                @Alpha3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha3;
+                @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -559,6 +715,24 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Aim.started += instance.OnAim;
                 @Aim.performed += instance.OnAim;
                 @Aim.canceled += instance.OnAim;
+                @ShootRealised.started += instance.OnShootRealised;
+                @ShootRealised.performed += instance.OnShootRealised;
+                @ShootRealised.canceled += instance.OnShootRealised;
+                @ChangeShootType.started += instance.OnChangeShootType;
+                @ChangeShootType.performed += instance.OnChangeShootType;
+                @ChangeShootType.canceled += instance.OnChangeShootType;
+                @Alpha1.started += instance.OnAlpha1;
+                @Alpha1.performed += instance.OnAlpha1;
+                @Alpha1.canceled += instance.OnAlpha1;
+                @Alpha2.started += instance.OnAlpha2;
+                @Alpha2.performed += instance.OnAlpha2;
+                @Alpha2.canceled += instance.OnAlpha2;
+                @Alpha3.started += instance.OnAlpha3;
+                @Alpha3.performed += instance.OnAlpha3;
+                @Alpha3.canceled += instance.OnAlpha3;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
             }
         }
     }
@@ -577,5 +751,11 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
+        void OnShootRealised(InputAction.CallbackContext context);
+        void OnChangeShootType(InputAction.CallbackContext context);
+        void OnAlpha1(InputAction.CallbackContext context);
+        void OnAlpha2(InputAction.CallbackContext context);
+        void OnAlpha3(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }

@@ -2,28 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SniperWeapon : Weapon
+public class SniperWeapon : Weapon,IListener
 {
-    [Header("Input Manager")]
-    [SerializeField] private InputManager _input;
-
-    [Header("Hands Transform")]
-    [SerializeField] private Transform _handsTransform;
-
-    [Header("Setting Aiming")]
-    [SerializeField] private Vector3 _scopePosition;
-    [SerializeField] private float _aimingSpeed;
-
-    private Vector3 _handsStartPosition;
-    private bool _canShoot;
-    private bool _canAiming;
+    private bool _realisedAim;
 
     private void Start()
     {
-        ObjectPool.CreatePool(BulletPrefab, "Bullet", 10, true);
+        ObjectPool.CreatePool(BulletPrefab, "Sniper_Bullet", 10, true);
+
         CurrentAmmo = WeaponSettings.ClipSize;
-        _canShoot = true;
-        _handsStartPosition = _handsTransform.localPosition;
+        CanShoot = true;
+        HandsStartPosition = HandsTransform.localPosition;
+
+        EventManager.Instance.AddListener(Event_Type.Weapon_PullTheShatter, this);
         
     }
 
@@ -39,17 +30,17 @@ public class SniperWeapon : Weapon
 
     protected override void Aim()
     {
-        if (_canAiming)
+        if (CanAiming)
         {
-            _handsTransform.localPosition = Vector3.Lerp(_handsTransform.localPosition, _scopePosition, 
-                                                         _aimingSpeed * Time.deltaTime);
+            HandsTransform.localPosition = Vector3.Lerp(HandsTransform.localPosition, ScopePosition, 
+                                                         AimingSpeed * Time.deltaTime);
             ScopeCamera.fieldOfView = Mathf.Lerp(ScopeCamera.fieldOfView, AimFov, CameraZoomSpeed * Time.deltaTime);
             IsAiming = true;
         }
         else
         {
-            _handsTransform.localPosition = Vector3.Lerp(_handsTransform.localPosition, _handsStartPosition,
-                                                         _aimingSpeed * Time.deltaTime);
+            HandsTransform.localPosition = Vector3.Lerp(HandsTransform.localPosition, HandsStartPosition,
+                                                         AimingSpeed * Time.deltaTime);
             ScopeCamera.fieldOfView = Mathf.Lerp(ScopeCamera.fieldOfView, DefaultFov, CameraZoomSpeed * Time.deltaTime);
             IsAiming = false;
         }
@@ -58,34 +49,29 @@ public class SniperWeapon : Weapon
 
     protected override void Shoot()
     {
-        if (_input.ShootIsTrigger && !IsReloading && !ArmsAnimator.GetBool("IsSprinting") && _canShoot && !OutOfAmmo)
+        if (InputManager.ShootIsTrigger && !IsReloading && !ArmsAnimator.GetBool("IsSprinting") && CanShoot && !OutOfAmmo)
         {
-            if(Time.time > LastFired - 1 / WeaponSettings.FireRate)
-            {
-                LastFired = Time.time;
-                CurrentAmmo--;
-
-                ArmsAnimator.Play("Sniper_Shoot", 0, 0f);
-
-                PoolComponent bullet = ObjectPool.GetObject("Bullet", BulletSpawnPoint.position, BulletSpawnPoint.rotation);
-                EventManager.Instance.PostNotification(Event_Type.Weapon_Recoil, this);
-                SoundManager.Instance.PlayAudio(AudioType.Weapon_Shoot);
-                MuzzleFlash.Play();
-                bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * WeaponSettings.BulletForce;
-
-            }
+            CurrentAmmo--;
+           
+            ArmsAnimator.Play("Sniper_Shoot", 0, 0f);
+           
+            PoolComponent bullet = ObjectPool.GetObject("Sniper_Bullet", BulletSpawnPoint.position, BulletSpawnPoint.rotation);
+            EventManager.Instance.PostNotification(Event_Type.Weapon_Recoil, this);
+            SoundManager.Instance.PlayAudio(AudioType.Sniper_Shoot);
+            MuzzleFlash.Play();
+            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * WeaponSettings.BulletForce;
         }
     }
 
-    private void AnimationStanceCheck()
+    protected override void AnimationStanceCheck()
     {
-        if (ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Shootr"))
+        if (ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Shoot"))
         {
-            _canShoot = false;
+            CanShoot = false;
         }
         else
         {
-            _canShoot = true;
+            CanShoot = true;
         }
 
         if (ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_ReloadOutOfAmmo"))
@@ -100,15 +86,21 @@ public class SniperWeapon : Weapon
 
     protected override void Reload()
     {
-        if (_input.ReloadIsTrigger)
+        if (InputManager.ReloadIsTrigger)
         {
-            if (OutOfAmmo || CurrentAmmo < WeaponSettings.ClipSize)
-            {
-                ArmsAnimator.Play("Sniper_ReloadOutOfAmmo", 0, 0f);
+            Reloading();
+        }
+    }
 
-                CurrentAmmo = WeaponSettings.ClipSize;
-                OutOfAmmo = false;
-            }
+    private void Reloading()
+    {
+        if (OutOfAmmo || CurrentAmmo < WeaponSettings.ClipSize)
+        {
+            ArmsAnimator.Play("Sniper_ReloadOutOfAmmo", 0, 0f);
+
+            CurrentAmmo = WeaponSettings.ClipSize;
+            OutOfAmmo = false;
+            StopCoroutine(AutoReload());
         }
     }
 
@@ -125,22 +117,64 @@ public class SniperWeapon : Weapon
         }
     }
 
-    private void CheckAiming()
+    protected override void CheckAiming()
     {
-        if (_input.AimingPressTrigger && !ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Running"))
+        if (InputManager.AimingPressTrigger && !ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName(NameGun + "_Running"))
         {
-            _canAiming = true;
+            CanAiming = true;
+            _realisedAim = false;
         }
-        else if(_input.AimingRealisedTrigger || ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sniper_Running"))
+        else if(InputManager.AimingRealisedTrigger || ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName(NameGun + "_Running"))
         {
-            _canAiming = false;
+            CanAiming = false;
+            _realisedAim = true;
         }
     }
+
+    #region - Coroutins -
 
     protected override IEnumerator AutoReload()
     {
         yield return new WaitForSeconds(WeaponSettings.AutoReloadDelay);
 
-        Reload();
+        Reloading();
     }
+
+    private IEnumerator DelayPullTheShatter()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        if (_realisedAim)
+        {
+            CanAiming = false;
+        }
+        else
+        {
+            CanAiming = true;
+        }
+    }
+
+    #endregion
+
+    #region - IListener - 
+
+    public void OnEvent(Event_Type eventType, Component sender, Object param = null)
+    {
+        if (IsAiming)
+        {
+            CanAiming = false;
+            StartCoroutine(DelayPullTheShatter());
+        }
+    }
+
+    #endregion
+
+    #region - OnDisable -
+
+    private void OnDisable()
+    {
+        EventManager.Instance.RemoveListener(this);
+    }
+
+    #endregion
 }

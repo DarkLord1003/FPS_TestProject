@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour,IListener
+public class SoundManager : MonoBehaviour
 {
     private static SoundManager _instance;
 
+    [SerializeField] private bool _isDebug;
     [SerializeField] private AudioTrack[] _tracks;
     public static SoundManager Instance
     {
@@ -26,16 +27,6 @@ public class SoundManager : MonoBehaviour,IListener
             _jobTable = new Hashtable();
             GenerateAudioTable();
         }
-    }
-
-    private void Start()
-    {
-        Debug.Log("Содержание массива:" + _tracks.Length);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload1, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload2, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload3, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload4, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload5, this);
     }
 
     #region - Settings Sound Manager Methods
@@ -216,57 +207,22 @@ public class SoundManager : MonoBehaviour,IListener
 
     #endregion
 
-
-    #region - ILIstener - 
-
-    public void OnEvent(Event_Type eventType, Component sender, UnityEngine.Object param = null)
-    {
-        switch (eventType)
-        {
-            case Event_Type.Weapon_Reload1:
-                PlayOneShot(AudioType.Weapon_Reload1);
-                break;
-
-            case Event_Type.Weapon_Reload2:
-                PlayOneShot(AudioType.Weapon_Reload2);
-                break;
-
-            case Event_Type.Weapon_Reload3:
-                PlayOneShot(AudioType.Weapon_Reload3);
-                break;
-
-            case Event_Type.Weapon_Reload4:
-                PlayOneShot(AudioType.Weapon_Reload4);
-                break;
-
-            case Event_Type.Weapon_Reload5:
-                PlayOneShot(AudioType.Weapon_Reload5);
-                break;
-
-            case Event_Type.Weapon_Reload6:
-                PlayOneShot(AudioType.Weapon_Reload6);
-                break;
-
-            default:
-                LogWarning("Такого типа нет!");
-                break;
-
-        }
-    }
-
-    #endregion
-
-
     #region - Debug Methods
 
     private void Log(string msg)
     {
-        Debug.Log("[Sound Manager]: " + msg);
+        if (_isDebug)
+        {
+            Debug.Log("[Sound Manager]: " + msg);
+        }
     }
 
     private void LogWarning(string msg)
     {
-        Debug.LogWarning("[Sound Manager]: " + msg);
+        if (_isDebug)
+        {
+            Debug.LogWarning("[Sound Manager]: " + msg);
+        }
     }
 
     #endregion
@@ -277,13 +233,8 @@ public class SoundManager : MonoBehaviour,IListener
     private void OnDisable()
     {
         Dispose();
-        EventManager.Instance.RemoveListener(this);
     }
 
-    private void OnEnable()
-    {
-        
-    }
     #endregion
 
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f4c20a0a5f34a4fa05aee7d987b94d, type: 3}
+  m_Name: smg45
+  m_EditorClassIdentifier: 
+  _name: smg45
+  _icon: {fileID: 0}
+  _prefab: {fileID: 2805770137348759871, guid: c3de32f328359264b897de4454c8a2cb, type: 3}
+  _clipSize: 30
+  _clipCount: 5
+  _range: 0
+  _weaponType: 2

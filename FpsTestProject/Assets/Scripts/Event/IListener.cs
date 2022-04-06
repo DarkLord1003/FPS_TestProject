@@ -6,6 +6,7 @@ public enum Event_Type
 {
     Game_End,
     Spawn_Casing,
+    Weapon_PullTheShatter,
     Weapon_Recoil,
     Weapon_Reload1,
     Weapon_Reload2,

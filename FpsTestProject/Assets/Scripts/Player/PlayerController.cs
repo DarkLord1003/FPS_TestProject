@@ -321,9 +321,7 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateAnimation()
     {
-        _animator.SetFloat("Speed", _characterController.velocity.sqrMagnitude);
-        _animator.SetBool("IsSprinting", _isSprinting);
-
+        _animator.SetFloat("Speed", _characterController.velocity.magnitude);
     }
 
     #endregion
@@ -335,13 +333,13 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position - new Vector3(0, 1, 0), _radiusSphere);
 
         Vector3 start = new Vector3(_feet.transform.position.x, _feet.transform.position.y +
-                        0.3f + _checkCellingErrorMargin, _feet.transform.position.z);
+                        0.5f + _checkCellingErrorMargin, _feet.transform.position.z);
 
         Vector3 end = new Vector3(_feet.transform.position.x, _feet.transform.position.y -
-                      0.3f - _checkCellingErrorMargin + _stand.Collider.height);
+                      0.5f - _checkCellingErrorMargin + _stand.Collider.height,_feet.transform.position.z);
 
-        Gizmos.DrawWireSphere(start, 0.3f);
-        Gizmos.DrawWireSphere(end, 0.3f);
+        Gizmos.DrawWireSphere(start, 0.5f);
+        Gizmos.DrawWireSphere(end, 0.5f);
     }
 
     #endregion

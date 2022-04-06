@@ -5,11 +5,15 @@ using UnityEngine;
 public enum AudioType
 {
    Noene,
-   Weapon_Shoot,
-   Weapon_Reload1,
-   Weapon_Reload2,
-   Weapon_Reload3,
-   Weapon_Reload4,
-   Weapon_Reload5,
-   Weapon_Reload6
+   Sniper_Shoot,
+   Sniper_Reload1,
+   Sniper_Reload2,
+   Sniper_Reload3,
+   Sniper_Reload4,
+   Sniper_Reload5,
+   Sniper_Reload6,
+   Smg45_Shoot,
+   Smg45_Reload1,
+   Smg45_Reload2,
+   Smg45_Reload3
 }
