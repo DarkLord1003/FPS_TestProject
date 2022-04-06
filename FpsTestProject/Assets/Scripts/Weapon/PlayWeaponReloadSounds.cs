@@ -8,6 +8,8 @@ public class PlayWeaponReloadSounds : MonoBehaviour, IListener
     [Tooltip("Название оружия у которого будут проигрываться звуки перерезарядки")]
     [SerializeField] private string _nameGun;
 
+    private int _state = 0;
+
     [Header("Audio Types")]
     private AudioType _reload1;
     private AudioType _reload2;
@@ -20,12 +22,17 @@ public class PlayWeaponReloadSounds : MonoBehaviour, IListener
     {
         Initialize();
 
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload1, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload2, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload3, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload4, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload5, this);
-        EventManager.Instance.AddListener(Event_Type.Weapon_Reload6, this);
+        if (_state == 0)
+        {
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload1, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload2, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload3, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload4, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload5, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload6, this);
+        }
+
+        Debug.Log("4848");
     }
 
     #region - OnEvent - 
@@ -94,7 +101,27 @@ public class PlayWeaponReloadSounds : MonoBehaviour, IListener
 
     private void OnDisable()
     {
-        EventManager.Instance.RemoveListener(this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Reload1,this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Reload2,this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Reload3,this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Reload4,this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Reload5,this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Reload6,this);
+        Debug.Log("Remove listenerr" + gameObject.name);
+    }
+
+    private void OnEnable()
+    {
+        if(EventManager.Instance)
+        {
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload1, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload2, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload3, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload4, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload5, this);
+            EventManager.Instance.AddListener(Event_Type.Weapon_Reload6, this);
+            _state = 1;
+        }
     }
 
     #endregion

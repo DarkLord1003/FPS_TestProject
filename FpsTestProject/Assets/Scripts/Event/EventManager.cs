@@ -40,16 +40,21 @@ public class EventManager : MonoBehaviour
         listeners.Add(eventType, listListen);
     }
 
-    public void RemoveListener(IListener listener)
+    public void RemoveListener(Event_Type eventType,IListener listener)
     {
-        var keys = listeners.Keys;
-        foreach(var key in keys)
+        List<IListener> list = new List<IListener>();
+
+        foreach(IListener listener1 in listeners[eventType])
         {
-            if(listeners[key] == listener)
+            if(listener1 != listener)
             {
-                listeners.Remove(key);
+                list.Add(listener1);
             }
+
         }
+
+        listeners[eventType] = list;
+
     }
 
     public void PostNotification(Event_Type eventType,Component sender,Object param = null)

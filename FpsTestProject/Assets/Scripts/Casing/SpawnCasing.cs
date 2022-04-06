@@ -11,27 +11,42 @@ public class SpawnCasing : MonoBehaviour,IListener
     [Header("Speed Throw")]
     [SerializeField] private float _speedThrow;
 
+    private int _state;
+
 
     private void Start()
     {
-        EventManager.Instance.AddListener(Event_Type.Spawn_Casing, this);
-        ObjectPool.CreatePool(_casingPrefab, "Casing", 10, false);
+        if (_state == 0)
+        {
+            EventManager.Instance.AddListener(Event_Type.Spawn_Casing, this);
+        }
+
+        ObjectPool.CreatePool(_casingPrefab, gameObject.name + "Casing", 20, true);
     }
 
     #region - Spawn -
     private void Spawn()
     {
-        PoolComponent casing = ObjectPool.GetObject("Casing", _casingSpawnPoint.position, _casingSpawnPoint.rotation);
+        PoolComponent casing = ObjectPool.GetObject(gameObject.name + "Casing", _casingSpawnPoint.position, _casingSpawnPoint.rotation);
 
         casing.GetComponent<Rigidbody>().velocity = transform.right * _speedThrow * Time.deltaTime;
     }
 
     #endregion
 
-    #region - OnDisable -
+    #region - OnDisable/Enable -
     private void OnDisable()
     {
-        EventManager.Instance.RemoveListener(this);
+        EventManager.Instance.RemoveListener(Event_Type.Spawn_Casing,this);
+    }
+
+    private void OnEnable()
+    {
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.AddListener(Event_Type.Spawn_Casing, this);
+            _state = 1;
+        }
     }
 
     #endregion

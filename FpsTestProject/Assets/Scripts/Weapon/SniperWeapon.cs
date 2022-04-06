@@ -5,6 +5,7 @@ using UnityEngine;
 public class SniperWeapon : Weapon,IListener
 {
     private bool _realisedAim;
+    private int _state = 0;
 
     private void Start()
     {
@@ -14,7 +15,10 @@ public class SniperWeapon : Weapon,IListener
         CanShoot = true;
         HandsStartPosition = HandsTransform.localPosition;
 
-        EventManager.Instance.AddListener(Event_Type.Weapon_PullTheShatter, this);
+        if (_state == 0)
+        {
+            EventManager.Instance.AddListener(Event_Type.Weapon_PullTheShatter, this);
+        }
         
     }
 
@@ -169,11 +173,20 @@ public class SniperWeapon : Weapon,IListener
 
     #endregion
 
-    #region - OnDisable -
+    #region - OnDisable/Enable -
 
     private void OnDisable()
     {
-        EventManager.Instance.RemoveListener(this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_PullTheShatter,this);
+    }
+
+    private void OnEnable()
+    {
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.AddListener(Event_Type.Weapon_PullTheShatter, this);
+            _state = 1;
+        }
     }
 
     #endregion

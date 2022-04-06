@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CalculateMove();
+        PlayFootStepsSound();
         CalculateView();
         CalculateJump();
         CalculateStance();
@@ -167,8 +168,8 @@ public class PlayerController : MonoBehaviour
         _newCharacterRotationSmooth = Vector3.SmoothDamp(_newCharacterRotationSmooth, _newCharacterRotation,
           ref _newCharacterRotationSmoothVelocity, _playerSettings.ViewSmoothSpeed);
 
-        _camera.localRotation = Quaternion.Euler(_newCameraRotationSmooth);
-        transform.localRotation = Quaternion.Euler(_newCharacterRotationSmooth);
+        _camera.localRotation = Quaternion.Euler(_newCameraRotation);
+        transform.localRotation = Quaternion.Euler(_newCharacterRotation);
     }
 
     #endregion
@@ -322,6 +323,16 @@ public class PlayerController : MonoBehaviour
     private void CalculateAnimation()
     {
         _animator.SetFloat("Speed", _characterController.velocity.magnitude);
+        _animator.SetBool("IsSprinting", _isSprinting);
+    }
+
+    #endregion
+
+    #region - Foot Steps Play Sound -
+
+    private void PlayFootStepsSound()
+    {
+        
     }
 
     #endregion

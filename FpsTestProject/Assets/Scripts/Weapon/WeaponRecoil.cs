@@ -78,7 +78,7 @@ public class WeaponRecoil : MonoBehaviour,IListener
 
     private void OnDisable()
     {
-        EventManager.Instance.RemoveListener(this);
+        EventManager.Instance.RemoveListener(Event_Type.Weapon_Recoil,this);
     }
 
     #endregion

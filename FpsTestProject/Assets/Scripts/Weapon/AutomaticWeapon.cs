@@ -187,6 +187,11 @@ public class AutomaticWeapon : Weapon
 
         if (OutOfAmmo)
         {
+            if (IsAiming)
+            {
+                StartCoroutine(DelayReloading());
+            }
+
             ArmsAnimator.Play(NameGun + "_ReloadOutOfAmmo", 0, 0f);
             CurrentAmmo = WeaponSettings.ClipSize;
             OutOfAmmo = false;

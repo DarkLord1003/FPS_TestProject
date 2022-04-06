@@ -5,6 +5,10 @@ using UnityEngine;
 public enum AudioType
 {
    Noene,
+   Player_FootSteps_Walking,
+   Player_FootSteps_Running,
+   Player_Walking_Breathing,
+   Player_Running_Breathing,
    Sniper_Shoot,
    Sniper_Reload1,
    Sniper_Reload2,
