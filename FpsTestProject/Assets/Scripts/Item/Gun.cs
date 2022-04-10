@@ -21,6 +21,13 @@ public class Gun : Item
     public string Name
     {
         get => _name;
+        set => _name = value;
+    }
+
+    public int ID
+    {
+        get => _id;
+        set => _id = value;
     }
 
     public int ClipSize

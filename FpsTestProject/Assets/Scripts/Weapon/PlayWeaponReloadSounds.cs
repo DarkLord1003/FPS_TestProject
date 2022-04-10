@@ -92,6 +92,20 @@ public class PlayWeaponReloadSounds : MonoBehaviour, IListener
             _reload2 = AudioType.Smg45_Reload2;
             _reload3 = AudioType.Smg45_Reload3;
         }
+
+        if (_nameGun.ToLower() == "ak")
+        {
+            _reload1 = AudioType.AK_Reload1;
+            _reload2 = AudioType.AK_Reload2;
+            _reload3 = AudioType.AK_Reload3;
+        }
+        
+        if (_nameGun.ToLower() == "spas12")
+        {
+            _reload1 = AudioType.Spas12_Reload1;
+            _reload2 = AudioType.Spas12_Reload2;
+        }
+
     }
 
     #endregion

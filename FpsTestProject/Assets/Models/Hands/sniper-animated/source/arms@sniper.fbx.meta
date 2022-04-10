@@ -5,7 +5,7 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: -1498010087492872569
-    second: sniper
+    second: Sniper_Down
   - first:
       74: 1731692067222897130
     second: Sniper_Shoot
@@ -65,11 +65,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: sniper
+      name: Sniper_Down
       takeName: CINEMA_4D_Main
       internalID: 0
-      firstFrame: 0
-      lastFrame: 200
+      firstFrame: 96
+      lastFrame: 109
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

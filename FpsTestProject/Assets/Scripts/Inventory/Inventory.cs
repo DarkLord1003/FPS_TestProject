@@ -11,7 +11,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        _weapons = new Gun[3];
+        _weapons = new Gun[4];
     }
 
     public void AddItem(Gun item)
@@ -22,8 +22,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            GameObject gun = Instantiate(_weapons[(int)item.WeaponStyle].Prefab,item.Prefab.transform.position,
-                                         item.Prefab.transform.rotation,_parent);
+            EventManager.Instance.PostNotification(Event_Type.Equiped_Weapon, this,item);
             _weapons[(int)item.WeaponStyle] = item;
         }
     }

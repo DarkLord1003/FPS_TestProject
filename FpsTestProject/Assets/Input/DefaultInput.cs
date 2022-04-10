@@ -188,6 +188,15 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Alpha4"",
+                    ""type"": ""Button"",
+                    ""id"": ""3bd43201-b2b0-47d4-bcde-fb0404405eb7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -487,6 +496,17 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ff44937-4941-497e-a8de-409a503d7284"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Alpha4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -513,6 +533,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         m_Player_Alpha2 = m_Player.FindAction("Alpha2", throwIfNotFound: true);
         m_Player_Alpha3 = m_Player.FindAction("Alpha3", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
+        m_Player_Alpha4 = m_Player.FindAction("Alpha4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -590,6 +611,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Alpha2;
     private readonly InputAction m_Player_Alpha3;
     private readonly InputAction m_Player_Use;
+    private readonly InputAction m_Player_Alpha4;
     public struct PlayerActions
     {
         private @DefaultInput m_Wrapper;
@@ -612,6 +634,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         public InputAction @Alpha2 => m_Wrapper.m_Player_Alpha2;
         public InputAction @Alpha3 => m_Wrapper.m_Player_Alpha3;
         public InputAction @Use => m_Wrapper.m_Player_Use;
+        public InputAction @Alpha4 => m_Wrapper.m_Player_Alpha4;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -675,6 +698,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Alpha4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha4;
+                @Alpha4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha4;
+                @Alpha4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha4;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -733,6 +759,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @Alpha4.started += instance.OnAlpha4;
+                @Alpha4.performed += instance.OnAlpha4;
+                @Alpha4.canceled += instance.OnAlpha4;
             }
         }
     }
@@ -757,5 +786,6 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         void OnAlpha2(InputAction.CallbackContext context);
         void OnAlpha3(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnAlpha4(InputAction.CallbackContext context);
     }
 }

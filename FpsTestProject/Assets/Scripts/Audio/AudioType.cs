@@ -19,5 +19,17 @@ public enum AudioType
    Smg45_Shoot,
    Smg45_Reload1,
    Smg45_Reload2,
-   Smg45_Reload3
+   Smg45_Reload3,
+   Sniper_ShootWithSelincer,
+   AK_Shoot,
+   AK_Reload1,
+   AK_Reload2,
+   AK_Reload3,
+   AK_Empty,
+   Smg45_Empty,
+   Sniper_Empty,
+   Spas12_Shoot,
+   Spas12_Empty_Clip,
+   Spas12_Reload1,
+   Spas12_Reload2
 }

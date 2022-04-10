@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private bool _isDebug;
     [SerializeField] private AudioTrack[] _tracks;
+
     public static SoundManager Instance
     {
         get => _instance;
@@ -147,6 +148,22 @@ public class SoundManager : MonoBehaviour
         _jobTable.Remove(audioJob.AudioAction);
 
         yield return null;
+    }
+
+    public AudioSource GetAudioSource(AudioType audioType)
+    {
+        foreach(AudioTrack audioTrack in _tracks)
+        {
+            foreach(AudioObject audioObject in audioTrack.AudioObjects)
+            {
+                if(audioObject.AudioType == audioType)
+                {
+                    return audioTrack.AudioSource;
+                }
+            }
+        }
+
+        return null;
     }
 
     private AudioClip GetAudioClipFromAudioTrack(AudioType audioType,AudioTrack audioTrack)

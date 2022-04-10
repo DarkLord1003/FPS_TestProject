@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
         CalculateJump();
         CalculateStance();
         CalculateAnimation();
-        ChechGround();
+        CheckGround();
         Crouch();
         Prone();
         Jump();
@@ -296,7 +296,7 @@ public class PlayerController : MonoBehaviour
 
     #region - Check Ground -
 
-    private void ChechGround()
+    private void CheckGround()
     {
         _isGround = Physics.CheckSphere(transform.position - new Vector3(0, 1, 0), _radiusSphere, _groundMask);
     }
@@ -332,7 +332,38 @@ public class PlayerController : MonoBehaviour
 
     private void PlayFootStepsSound()
     {
-        
+        AudioSource audioSource = SoundManager.Instance.GetAudioSource(AudioType.Player_FootSteps_Running);
+
+        if(_characterController.velocity.sqrMagnitude > 0.2f && _isGround)
+        {
+            
+
+            if (audioSource)
+            {
+                if (_isSprinting)
+                {
+                    if (!audioSource.isPlaying)
+                    {
+                        SoundManager.Instance.PlayAudio(AudioType.Player_FootSteps_Running);
+                    }
+                }
+                else
+                {
+                    if (!audioSource.isPlaying)
+                    {
+                        SoundManager.Instance.PlayAudio(AudioType.Player_FootSteps_Walking);
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            if (audioSource.isPlaying)
+            {
+                audioSource.Pause();
+            }
+        }
     }
 
     #endregion

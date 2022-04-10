@@ -14,7 +14,8 @@ public enum Event_Type
     Weapon_Reload4,
     Weapon_Reload5,
     Weapon_Reload6,
-    Health_Change
+    Health_Change,
+    Equiped_Weapon
 }
 public interface IListener
 {

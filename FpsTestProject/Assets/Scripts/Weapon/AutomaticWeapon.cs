@@ -8,6 +8,10 @@ public class AutomaticWeapon : Weapon
     [Header("Shooting Type")]
     private ShootingType _shootingType;
 
+    [Header("Shooting Audio Type")]
+    [SerializeField] private AudioType _audioTypeShoot;
+    [SerializeField] private AudioType _audioTypeEmptyClip;
+
     private bool _realisedAim;
 
     private void Start()
@@ -114,7 +118,7 @@ public class AutomaticWeapon : Weapon
 
                 PoolComponent bullet = ObjectPool.GetObject("Automatic_Bullet", BulletSpawnPoint.position, BulletSpawnPoint.rotation);
                 EventManager.Instance.PostNotification(Event_Type.Weapon_Recoil, this);
-                SoundManager.Instance.PlayOneShot(AudioType.Smg45_Shoot);
+                SoundManager.Instance.PlayOneShot(_audioTypeShoot);
                 MuzzleFlash.Play();
                 bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * WeaponSettings.BulletForce;
 
@@ -123,6 +127,20 @@ public class AutomaticWeapon : Weapon
                     CanShoot = false;
                 }
 
+            }
+        }
+        else if(CanShoot && !IsReloading && !ArmsAnimator.GetBool("IsSprinting") && OutOfAmmo)
+        {
+            AudioSource audioSource = SoundManager.Instance.GetAudioSource(_audioTypeEmptyClip);
+
+            ArmsAnimator.Play(NameGun + "_Empty_Clip");
+
+            if (audioSource)
+            {
+                if (!audioSource.isPlaying)
+                {
+                    SoundManager.Instance.PlayAudio(_audioTypeEmptyClip);
+                }
             }
         }
     }

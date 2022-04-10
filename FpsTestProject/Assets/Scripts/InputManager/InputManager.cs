@@ -29,6 +29,7 @@ public class InputManager : MonoBehaviour
     private InputAction _alpha1;
     private InputAction _alpha2;
     private InputAction _alpha3;
+    private InputAction _alpha4;
     private InputAction _use;
 
     #endregion
@@ -58,6 +59,7 @@ public class InputManager : MonoBehaviour
     private bool _alpha1IsTrigger;
     private bool _alpha2IsTrigger;
     private bool _alpha3IsTrigger;
+    private bool _alpha4IsTrigger;
     private bool _useIsTrigger;
 
     #endregion
@@ -147,6 +149,11 @@ public class InputManager : MonoBehaviour
         get => _alpha3IsTrigger;
     }
 
+    public bool Alpha4IsTrigger
+    {
+        get => _alpha4IsTrigger;
+    }
+
     public bool UseIsTrigger
     {
         get => _useIsTrigger;
@@ -192,6 +199,7 @@ public class InputManager : MonoBehaviour
         _alpha1IsTrigger = _alpha1.triggered;
         _alpha2IsTrigger = _alpha2.triggered;
         _alpha3IsTrigger = _alpha3.triggered;
+        _alpha4IsTrigger = _alpha4.triggered;
 
         _useIsTrigger = _use.triggered;
     }
@@ -219,6 +227,7 @@ public class InputManager : MonoBehaviour
         _alpha1 = _playerInput.actions["Alpha1"];
         _alpha2 = _playerInput.actions["Alpha2"];
         _alpha3 = _playerInput.actions["Alpha3"];
+        _alpha4 = _playerInput.actions["Alpha4"];
         _use = _playerInput.actions["Use"];
     }
 

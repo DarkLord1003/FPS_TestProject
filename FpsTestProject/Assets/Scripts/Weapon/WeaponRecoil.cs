@@ -24,13 +24,16 @@ public class WeaponRecoil : MonoBehaviour,IListener
     [SerializeField] private float _returnSpeed;
 
     private int index = 0;
-
+    private int _state = 0;
     private Vector3 _currentRotation;
     private Vector3 _targetRotation;
 
     private void Start()
     {
-        EventManager.Instance.AddListener(Event_Type.Weapon_Recoil, this);
+        if (_state == 0)
+        {
+            EventManager.Instance.AddListener(Event_Type.Weapon_Recoil, this);
+        }
     }
     private void Update()
     {
@@ -74,12 +77,22 @@ public class WeaponRecoil : MonoBehaviour,IListener
     #endregion
 
 
-    #region - OnDisable -
+    #region - OnDisable/Enable -
 
     private void OnDisable()
     {
         EventManager.Instance.RemoveListener(Event_Type.Weapon_Recoil,this);
     }
+
+    private void OnEnable()
+    {
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.AddListener(Event_Type.Weapon_Recoil, this);
+            _state = 1;
+        }
+    }
+
 
     #endregion
 

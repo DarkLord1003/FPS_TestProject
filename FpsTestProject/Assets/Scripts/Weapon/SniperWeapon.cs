@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class SniperWeapon : Weapon,IListener
 {
+    [Header("Selincer")]
+    [SerializeField] private GameObject _selincer;
+
+    [Header("Audio Types")]
+    [SerializeField] private AudioType _audioTypeShoot;
+    [SerializeField] private AudioType _audioTypeEmptyClip;
+
     private bool _realisedAim;
     private int _state = 0;
 
@@ -61,9 +68,30 @@ public class SniperWeapon : Weapon,IListener
            
             PoolComponent bullet = ObjectPool.GetObject("Sniper_Bullet", BulletSpawnPoint.position, BulletSpawnPoint.rotation);
             EventManager.Instance.PostNotification(Event_Type.Weapon_Recoil, this);
-            SoundManager.Instance.PlayAudio(AudioType.Sniper_Shoot);
+
+            if (_selincer != null && _selincer.activeInHierarchy)
+            {
+                SoundManager.Instance.PlayAudio(AudioType.Sniper_ShootWithSelincer);
+            }
+            else
+            {
+                SoundManager.Instance.PlayAudio(_audioTypeShoot);
+            }
+
             MuzzleFlash.Play();
             bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * WeaponSettings.BulletForce;
+        }
+        else if(InputManager.ShootIsTrigger && !IsReloading && !ArmsAnimator.GetBool("IsSprinting") && CanShoot && OutOfAmmo)
+        {
+            AudioSource audioSource = SoundManager.Instance.GetAudioSource(_audioTypeEmptyClip);
+
+            if (audioSource)
+            {
+                if (!audioSource.isPlaying)
+                {
+                    SoundManager.Instance.PlayAudio(_audioTypeEmptyClip);
+                }
+            }
         }
     }
 
@@ -104,7 +132,6 @@ public class SniperWeapon : Weapon,IListener
 
             CurrentAmmo = WeaponSettings.ClipSize;
             OutOfAmmo = false;
-            StopCoroutine(AutoReload());
         }
     }
 
@@ -125,8 +152,8 @@ public class SniperWeapon : Weapon,IListener
     {
         if (InputManager.AimingPressTrigger && !ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName(NameGun + "_Running"))
         {
-            CanAiming = true;
-            _realisedAim = false;
+             CanAiming = true;
+             _realisedAim = false;   
         }
         else if(InputManager.AimingRealisedTrigger || ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName(NameGun + "_Running"))
         {
@@ -141,7 +168,13 @@ public class SniperWeapon : Weapon,IListener
     {
         yield return new WaitForSeconds(WeaponSettings.AutoReloadDelay);
 
-        Reloading();
+        if (OutOfAmmo)
+        {
+            ArmsAnimator.Play("Sniper_ReloadOutOfAmmo", 0, 0f);
+
+            CurrentAmmo = WeaponSettings.ClipSize;
+            OutOfAmmo = false;
+        }
     }
 
     private IEnumerator DelayPullTheShatter()
@@ -156,6 +189,7 @@ public class SniperWeapon : Weapon,IListener
         {
             CanAiming = true;
         }
+
     }
 
     #endregion

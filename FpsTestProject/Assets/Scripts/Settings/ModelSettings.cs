@@ -100,11 +100,13 @@ public static class ModelSettings
     {
         [Header("General")]
         [SerializeField] private float _fireRate;
+        [SerializeField] private float _reloadDelay;
         [SerializeField] private float _autoReloadDelay;
         [SerializeField] private int _clipSize;
         [SerializeField] private bool _autoReload;
         public float FireRate => _fireRate;
         public float AutoReloadDelay => _autoReloadDelay;
+        public float ReloadDelay => _reloadDelay;
         public int ClipSize => _clipSize;
         public bool AutoReload => _autoReload;
 
