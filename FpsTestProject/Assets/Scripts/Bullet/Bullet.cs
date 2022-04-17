@@ -28,4 +28,13 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(_minDestroyTime, _maxDestroyTime));
         gameObject.SetActive(false);
     }
+
+}
+
+public enum TypeBullet
+{
+    Normal,
+    Armor_Piecing,
+    Tracer,
+    Fraction
 }

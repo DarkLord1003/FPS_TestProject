@@ -106,6 +106,13 @@ public class PlayWeaponReloadSounds : MonoBehaviour, IListener
             _reload2 = AudioType.Spas12_Reload2;
         }
 
+        if (_nameGun.ToLower() == "deserteagle")
+        {
+            _reload1 = AudioType.DesertEagle_Reload1;
+            _reload2 = AudioType.DesertEagle_Reload2;
+            _reload3 = AudioType.DesertEagle_Reload3;
+        }
+
     }
 
     #endregion

@@ -18,10 +18,13 @@ public static class ModelSettings
     [Serializable]
     public class PlayerStance
     {
-        [SerializeField] private CapsuleCollider _collider;
         [SerializeField] private float _cameraHeight;
-        public CapsuleCollider Collider => _collider;
+        [SerializeField] private float _height;
+        [SerializeField] private Vector3 _center;
+
         public float CameraHeight => _cameraHeight;
+        public float Height => _height;
+        public Vector3 Center => _center;
     }
 
 

@@ -10,34 +10,30 @@ public class EquipmentManager : MonoBehaviour,IListener
     [Header("Animator")]
     [SerializeField] private Animator _playerAnimator;
 
+    [Header("Inventory")]
+    [SerializeField] private Inventory _inventory;
+
     [Header("Hands")]
     [SerializeField] private Weapon[] _weapons;
 
-    public EquipmentManager EquipedManager
-    {
-        get => this;
-    }
+    [Header("Parent")]
+    [SerializeField] private Transform _parent;
 
-    public Weapon CurrentEqupedWeapon
-    {
-        get => _currentEqupedWeapon;
-    }
+    public EquipmentManager EquipedManager => this;
 
-    public Weapon NextEqupedWeapon
-    {
-        get => _nextEqupedWeapon;
-    }
+    public Weapon CurrentEqupedWeapon => _currentEqupedWeapon;
+ 
+    public Weapon NextEqupedWeapon => _nextEqupedWeapon;
+   
+    public Gun CurrentEqupedGun => _currentEquipedGun;
 
     private Weapon _currentEqupedWeapon;
+    private Gun _currentEquipedGun;
     private Weapon _nextEqupedWeapon;
-    private Inventory _inventory;
+    private Item item;
     private int _currentlyWeaponStyle = 2;
     private int _state = 0;
-
-    private void Awake()
-    {
-        _inventory = GetComponent<Inventory>();
-    }
+    private bool _canEqupedWeapon;
 
     private void Start()
     {
@@ -45,40 +41,60 @@ public class EquipmentManager : MonoBehaviour,IListener
         {
             EventManager.Instance.AddListener(Event_Type.Equiped_Weapon, this);
         }
+
+        _canEqupedWeapon = true;
     }
 
     private void Update()
     {
-        if (_inputManager.Alpha1IsTrigger)
+        if (_inputManager.Alpha1IsTrigger && _canEqupedWeapon)
         {
             if (_currentlyWeaponStyle != 0)
             {
-                EquipedWeapon(_inventory.GetItem(0));
+                item = _inventory.GetItem(0);
+
+                if (item == null)
+                    return;
+
+                EquipedWeapon(item);
                 UniquipedWeapon();
-                SetAnimationState(_inventory.GetItem(0));
+                SetAnimationState(item);
+                StartCoroutine(DelayWeaponEquiped());
             }  
         }
 
-        if (_inputManager.Alpha2IsTrigger)
+        if (_inputManager.Alpha2IsTrigger && _canEqupedWeapon)
         {
             if (_currentlyWeaponStyle != 1)
             {
-                EquipedWeapon(_inventory.GetItem(1));
+                item = _inventory.GetItem(1);
+
+                if (item == null)
+                    return;
+
+                EquipedWeapon(item);
                 UniquipedWeapon();
-                SetAnimationState(_inventory.GetItem(1));
+                SetAnimationState(item);
+                StartCoroutine(DelayWeaponEquiped());
             }
         }
 
-        if (_inputManager.Alpha4IsTrigger)
+        if (_inputManager.Alpha3IsTrigger && _canEqupedWeapon)
         {
             if (_currentlyWeaponStyle != 2)
             {
+                item = _inventory.GetItem(2);
+
+                if (item == null)
+                    return;
+
+                EquipedWeapon(item);
                 UniquipedWeapon();
-                SetAnimationState(_inventory.GetItem(3));
-                EqupedHands();
-                _currentlyWeaponStyle = 2;
+                SetAnimationState(item);
+                StartCoroutine(DelayWeaponEquiped());
             }
         }
+
     }
 
 
@@ -89,14 +105,21 @@ public class EquipmentManager : MonoBehaviour,IListener
         Gun gun = item as Gun;
 
         if (gun == null)
+        {
+            UniquipedWeapon();
+            SetAnimationState(gun);
             return;
+        }
+            
 
         for(int i = 0; i < _weapons.Length; i++)
         {
             if(_weapons[i].NameWeapon.ToLower() == gun.Name.ToLower())
             {
+                _currentEquipedGun = gun;
                 _currentEqupedWeapon = _nextEqupedWeapon;
                 _nextEqupedWeapon = _weapons[i];
+                Debug.Log(_nextEqupedWeapon.name);
             }
         }    
     }
@@ -124,7 +147,6 @@ public class EquipmentManager : MonoBehaviour,IListener
         }
 
     }
-
     #endregion
 
     #region - IListener -
@@ -142,6 +164,19 @@ public class EquipmentManager : MonoBehaviour,IListener
                 SetAnimationState(gun);
             }          
         }
+    }
+
+    #endregion
+
+    #region - Coroutines -
+
+    private IEnumerator DelayWeaponEquiped()
+    {
+        _canEqupedWeapon = false;
+        yield return new WaitForSeconds(2f);
+        _canEqupedWeapon = true;
+
+        yield break;
     }
 
     #endregion

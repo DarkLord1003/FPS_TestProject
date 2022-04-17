@@ -44,11 +44,20 @@ public static class ObjectPool
         if (pools == null || count <= 0 || name.Trim() == string.Empty || sample == null)
             return;
 
+        foreach(Part p in pools)
+        {
+            if(p.Name.CompareTo(name) == 0)
+            {
+                return;
+            }
+        }
+
         Part part = new Part();
         part.Name = name;
         part.Prefabs = new List<PoolComponent>();
         part.Resize = autoResize;
         part.Parent = new GameObject("Pool - " + name).transform;
+        
 
         for(int i = 0; i < count; i++)
         {

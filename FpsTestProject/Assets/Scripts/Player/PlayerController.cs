@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Transform _feet;
+    private Crosshair _crosshair;
     private CharacterController _characterController;
     private Animator _animator;
 
@@ -35,8 +36,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerStance _stand;
     [SerializeField] private PlayerStance _crouch;
     [SerializeField] private PlayerStance _prone;
+
+    [Header("Settings Check Celling")]
     [SerializeField] private LayerMask _cellingCheckMask;
     [SerializeField] private float _checkCellingErrorMargin = 0.05f;
+
     private PlayerState _currentState;
     private PlayerStance _currentStance;
 
@@ -68,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponentInChildren<Animator>();
+        _crosshair = GetComponent<Crosshair>();
     }
 
     private void Update()
@@ -120,6 +125,11 @@ public class PlayerController : MonoBehaviour
         else
         {
             _currentSpeedEffector = _playerSettings.SpeedEffector;
+        }
+
+        if (Mathf.Abs(moveInput.y) > 0.25f || Mathf.Abs(moveInput.x) > 0.25f)
+        {
+            
         }
 
         horizontalDir *= _currentSpeedEffector;
@@ -186,13 +196,12 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            _playerGravity = 0;
             _playerJumpHeight = new Vector3(0f, _playerSettings.JumpHeight, 0f);
         }
         else if(_playerInput.JumpIsTrigger && (_currentState == PlayerState.Crouch ||
                                                _currentState == PlayerState.Prone))
         {
-            if (CheckCelling(_stand.Collider.height))
+            if (CheckCelling(_stand.Height))
                 return;
 
             _currentState = PlayerState.Stand;
@@ -247,10 +256,10 @@ public class PlayerController : MonoBehaviour
 
         _camera.localPosition = new Vector3(_camera.localPosition.x, _cameraHeight, _camera.localPosition.z);
 
-        _characterController.height = Mathf.SmoothDamp(_characterController.height, _currentStance.Collider.height,
+        _characterController.height = Mathf.SmoothDamp(_characterController.height, _currentStance.Height,
                                       ref _heightCharacterVelocity, _playerSettings.HeightCharacterSmoothingSpeed);
 
-        _characterController.center = Vector3.SmoothDamp(_characterController.center, _currentStance.Collider.center,
+        _characterController.center = Vector3.SmoothDamp(_characterController.center, _currentStance.Center,
                                       ref _centerCharacterVelocity, _playerSettings.CenterCharacterSmoothingSpeed);
     }
 
@@ -260,7 +269,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_currentState == PlayerState.Crouch)
             {
-                if (CheckCelling(_stand.Collider.height))
+                if (CheckCelling(_stand.Height))
                 {
                     return;
                 }
@@ -279,7 +288,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_currentState == PlayerState.Prone)
             {
-                if (CheckCelling(_stand.Collider.height))
+                if (CheckCelling(_stand.Height))
                 {
                     return;
                 }
@@ -378,7 +387,7 @@ public class PlayerController : MonoBehaviour
                         0.5f + _checkCellingErrorMargin, _feet.transform.position.z);
 
         Vector3 end = new Vector3(_feet.transform.position.x, _feet.transform.position.y -
-                      0.5f - _checkCellingErrorMargin + _stand.Collider.height,_feet.transform.position.z);
+                      0.5f - _checkCellingErrorMargin + _stand.Height,_feet.transform.position.z);
 
         Gizmos.DrawWireSphere(start, 0.5f);
         Gizmos.DrawWireSphere(end, 0.5f);

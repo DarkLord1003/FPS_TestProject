@@ -32,6 +32,9 @@ public abstract class Weapon:MonoBehaviour
     [Header("Shoot Settings")]
     protected bool CanShoot;
 
+    [Header("Crosshair")]
+    [SerializeField] protected Crosshair WeaponCrosshair;
+
     [Header("Settings")]
     [SerializeField] protected WeaponSettings WeaponSettings;
     protected int CurrentAmmo;
@@ -65,5 +68,6 @@ public abstract class Weapon:MonoBehaviour
     protected abstract void CheckAmmoInClip();
     protected abstract void AnimationStanceCheck();
     protected abstract void CheckAiming();
+    protected abstract void CheckCrosshair();
     protected abstract IEnumerator AutoReload();
 }

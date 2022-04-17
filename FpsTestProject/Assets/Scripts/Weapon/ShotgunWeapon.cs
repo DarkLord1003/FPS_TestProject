@@ -21,8 +21,9 @@ public class ShotgunWeapon : Weapon
     {
         CheckAmmoInClip();
         CheckAiming();
-        //AnimationStanceCheck();
+        AnimationStanceCheck();
         Aim();
+        CheckCrosshair();
         Reload();
         Shoot();
     }
@@ -47,13 +48,13 @@ public class ShotgunWeapon : Weapon
 
     protected override void AnimationStanceCheck()
     {
-        if(ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName(NameGun + "_ReloadLeftOfAmmo"))
+        if(ArmsAnimator.GetCurrentAnimatorStateInfo(0).IsName(NameGun + "_Shoot"))
         {
-            //IsReloading = true;
+            CanShoot = false;
         }
         else
         {
-            //IsReloading = false;
+            CanShoot = true;
         }
     }
 
@@ -69,6 +70,17 @@ public class ShotgunWeapon : Weapon
         }
     }
 
+    protected override void CheckCrosshair()
+    {
+        if (IsAiming)
+        {
+            WeaponCrosshair.HideCrosshair(true);
+        }
+        else
+        {
+            WeaponCrosshair.HideCrosshair(false);
+        }
+    }
     protected override void CheckAmmoInClip()
     {
         if(CurrentAmmo == 0)

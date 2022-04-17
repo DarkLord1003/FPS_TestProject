@@ -36,6 +36,7 @@ public class SniperWeapon : Weapon,IListener
         Shoot();
         AnimationStanceCheck();
         Aim();
+        CheckCrosshair();
         Reload();
     }
 
@@ -159,6 +160,18 @@ public class SniperWeapon : Weapon,IListener
         {
             CanAiming = false;
             _realisedAim = true;
+        }
+    }
+
+    protected override void CheckCrosshair()
+    {
+        if (IsAiming)
+        {
+            WeaponCrosshair.HideCrosshair(true);
+        }
+        else
+        {
+            WeaponCrosshair.HideCrosshair(false);
         }
     }
 

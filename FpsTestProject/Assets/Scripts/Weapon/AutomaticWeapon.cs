@@ -31,9 +31,10 @@ public class AutomaticWeapon : Weapon
         ChangeShootType();
         CheckAiming();
         Aim();
+        CheckCrosshair();
+        AnimationStanceCheck();
         Shoot();
         Reload();
-        AnimationStanceCheck();
     }
 
 
@@ -66,6 +67,18 @@ public class AutomaticWeapon : Weapon
             {
                 StartCoroutine(AutoReload());
             }
+        }
+    }
+
+    protected override void CheckCrosshair()
+    {
+        if (IsAiming)
+        {
+            WeaponCrosshair.HideCrosshair(true);
+        }
+        else
+        {
+            WeaponCrosshair.HideCrosshair(false);
         }
     }
 
@@ -118,7 +131,7 @@ public class AutomaticWeapon : Weapon
 
                 PoolComponent bullet = ObjectPool.GetObject("Automatic_Bullet", BulletSpawnPoint.position, BulletSpawnPoint.rotation);
                 EventManager.Instance.PostNotification(Event_Type.Weapon_Recoil, this);
-                SoundManager.Instance.PlayOneShot(_audioTypeShoot);
+                SoundManager.Instance.PlayAudio(_audioTypeShoot);
                 MuzzleFlash.Play();
                 bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * WeaponSettings.BulletForce;
 
@@ -126,7 +139,6 @@ public class AutomaticWeapon : Weapon
                 {
                     CanShoot = false;
                 }
-
             }
         }
         else if(CanShoot && !IsReloading && !ArmsAnimator.GetBool("IsSprinting") && OutOfAmmo)

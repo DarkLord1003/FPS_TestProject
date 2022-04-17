@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f4c20a0a5f34a4fa05aee7d987b94d, type: 3}
+  m_Name: DesertEagle
+  m_EditorClassIdentifier: 
+  _name: DesertEagle
+  _id: 5
+  _icon: {fileID: 0}
+  _prefab: {fileID: 1085024384150614391, guid: e8fb1b3f01f4e6c41a0ec158b40b8794, type: 3}
+  _clipSize: 12
+  _clipCount: 10
+  _range: 0
+  _weaponType: 1
+  _weaponStyle: 1

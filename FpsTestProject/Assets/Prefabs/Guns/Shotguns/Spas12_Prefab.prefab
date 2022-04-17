@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4486180312401389550}
   - component: {fileID: 6639193743098102651}
   - component: {fileID: 716773140021386103}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Spas12_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390397640728470440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -79,7 +79,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &848190402464746078
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 2907305029169723708}
   - component: {fileID: 2107392373243642801}
   - component: {fileID: 6893924710203483887}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 4627640435342357330}
   - component: {fileID: 5781269498257757518}
   - component: {fileID: 8014742073793933797}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 8441943186154989712}
   - component: {fileID: 6118010371604234737}
   - component: {fileID: 8662676196647578917}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: slug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 4665573163189801791}
   - component: {fileID: 6656037126371801269}
   - component: {fileID: 7649152189827499763}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: pump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 490318350663363545}
   - component: {fileID: 4878638016330894260}
   - component: {fileID: 1591349408537575715}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: lid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

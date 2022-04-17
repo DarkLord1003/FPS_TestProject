@@ -31,5 +31,11 @@ public enum AudioType
    Spas12_Shoot,
    Spas12_Empty_Clip,
    Spas12_Reload1,
-   Spas12_Reload2
+   Spas12_Reload2,
+   DesertEagle_Shoot,
+   DesertEagle_Empty_Clip,
+   DesertEagle_Reload1,
+   DesertEagle_Reload2,
+   DesertEagle_Reload3
+   
 }
