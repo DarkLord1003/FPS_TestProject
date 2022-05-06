@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour,IListener
@@ -21,11 +20,21 @@ public class EquipmentManager : MonoBehaviour,IListener
 
     public EquipmentManager EquipedManager => this;
 
-    public Weapon CurrentEqupedWeapon => _currentEqupedWeapon;
+    public Weapon CurrentEqupedWeapon
+    {
+        get=> _currentEqupedWeapon;
+        set => _currentEqupedWeapon = value;
+    }
  
-    public Weapon NextEqupedWeapon => _nextEqupedWeapon;
+    public Weapon NextEqupedWeapon
+    {
+        get => _nextEqupedWeapon;
+        set => _nextEqupedWeapon = value;
+    }
    
     public Gun CurrentEqupedGun => _currentEquipedGun;
+    public Animator PlayerAnimator => _playerAnimator;
+    public Weapon[] Weapons => _weapons;
 
     private Weapon _currentEqupedWeapon;
     private Gun _currentEquipedGun;
@@ -49,49 +58,39 @@ public class EquipmentManager : MonoBehaviour,IListener
     {
         if (_inputManager.Alpha1IsTrigger && _canEqupedWeapon)
         {
-            if (_currentlyWeaponStyle != 0)
-            {
-                item = _inventory.GetItem(0);
-
-                if (item == null)
-                    return;
-
-                EquipedWeapon(item);
-                UniquipedWeapon();
-                SetAnimationState(item);
-                StartCoroutine(DelayWeaponEquiped());
-            }  
+            Eqiped(0);
         }
 
         if (_inputManager.Alpha2IsTrigger && _canEqupedWeapon)
         {
-            if (_currentlyWeaponStyle != 1)
-            {
-                item = _inventory.GetItem(1);
-
-                if (item == null)
-                    return;
-
-                EquipedWeapon(item);
-                UniquipedWeapon();
-                SetAnimationState(item);
-                StartCoroutine(DelayWeaponEquiped());
-            }
+            Eqiped(1);
         }
 
         if (_inputManager.Alpha3IsTrigger && _canEqupedWeapon)
         {
+            Eqiped(2);
+        }
+
+        if (_inputManager.TrowIsTrigger)
+        {
+            if (_currentEquipedGun)
+            {
+                UniquipedWeapon();
+                _currentlyWeaponStyle = 2;
+                _inventory.RemoveItem(_currentEquipedGun);
+                _playerAnimator.SetInteger("CurrentWeapon", 0);
+                StartCoroutine(DelayTrhow(_currentEquipedGun));
+            }
+        }
+
+        if (_inputManager.UseHandsIsTrigger)
+        {
             if (_currentlyWeaponStyle != 2)
             {
-                item = _inventory.GetItem(2);
-
-                if (item == null)
-                    return;
-
-                EquipedWeapon(item);
                 UniquipedWeapon();
-                SetAnimationState(item);
-                StartCoroutine(DelayWeaponEquiped());
+                _currentlyWeaponStyle = 2;
+                StartCoroutine(DelayEqupedHands());
+                _playerAnimator.SetInteger("CurrentWeapon", 0);
             }
         }
 
@@ -100,14 +99,27 @@ public class EquipmentManager : MonoBehaviour,IListener
 
     #region - General Methods -
 
+    public void Eqiped(int slotIndex)
+    {
+        if (_currentlyWeaponStyle != 1)
+        {
+            item = _inventory.GetItem(slotIndex);
+
+            if (item == null)
+                return;
+
+            EquipedWeapon(item);
+            UniquipedWeapon();
+            SetAnimationState(item);
+            StartCoroutine(DelayWeaponEquiped());
+        }
+    }
     private void EquipedWeapon(Item item)
     {
         Gun gun = item as Gun;
 
         if (gun == null)
         {
-            UniquipedWeapon();
-            SetAnimationState(gun);
             return;
         }
             
@@ -119,19 +131,11 @@ public class EquipmentManager : MonoBehaviour,IListener
                 _currentEquipedGun = gun;
                 _currentEqupedWeapon = _nextEqupedWeapon;
                 _nextEqupedWeapon = _weapons[i];
-                Debug.Log(_nextEqupedWeapon.name);
             }
         }    
     }
 
-    private void EqupedHands()
-    {
-        foreach(var weapon in _weapons)
-        {
-            weapon.gameObject.SetActive(false);
-        }
-    }
-    private void UniquipedWeapon()
+    public void UniquipedWeapon()
     {
         _playerAnimator.SetTrigger("UniquipWeapon");
     }
@@ -146,6 +150,31 @@ public class EquipmentManager : MonoBehaviour,IListener
             _playerAnimator.SetInteger("CurrentWeapon", gun.ID);
         }
 
+    }
+
+    public void SetAnimationState(int state)
+    {
+        _playerAnimator.SetInteger("CurrentWeapon", state);
+    }
+
+    public Weapon GetWeapon(Gun gun)
+    {
+        for (int i = 0; i < _weapons.Length; i++)
+        {
+            if (_weapons[i].NameWeapon.ToLower() == gun.Name.ToLower())
+            {
+                return _weapons[i];
+            }
+        }
+
+        return null;
+    }
+    private void DeactivateWeapon()
+    {
+        foreach (Weapon weapon in _weapons)
+        {
+            weapon.gameObject.SetActive(false);
+        }
     }
     #endregion
 
@@ -179,6 +208,25 @@ public class EquipmentManager : MonoBehaviour,IListener
         yield break;
     }
 
+    private IEnumerator DelayTrhow(Item item)
+    {
+        yield return new WaitForSeconds(0.4f);
+
+        if (item)
+        {
+            DeactivateWeapon();
+
+            _currentEquipedGun = null;
+            _currentEqupedWeapon = null;
+            _inventory.ThrowItem(item);
+        }
+    }
+
+    private IEnumerator DelayEqupedHands()
+    {
+        yield return new WaitForSeconds(0.5f);
+        DeactivateWeapon();
+    }
     #endregion
 
     #region - OnDisable/Enable - 

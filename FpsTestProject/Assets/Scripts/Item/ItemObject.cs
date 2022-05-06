@@ -11,5 +11,4 @@ public class ItemObject : MonoBehaviour
     {
         get => _item;
     }
-
 }

@@ -16,7 +16,8 @@ public enum Event_Type
     Weapon_Reload6,
     Health_Change,
     Equiped_Weapon,
-    Crosshair_Resizing
+    Crosshair_Resizing,
+    Slot_Placement
 }
 public interface IListener
 {

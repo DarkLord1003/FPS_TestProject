@@ -20,6 +20,7 @@ public class AnimationEventProvider : MonoBehaviour
     {
         if(_equipmentManager.CurrentEqupedWeapon != null)
         {
+            Debug.Log(123456789);
             _equipmentManager.CurrentEqupedWeapon.gameObject.SetActive(false);
         }
     }

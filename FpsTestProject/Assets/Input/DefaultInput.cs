@@ -197,6 +197,33 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PickUpItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""06f41baf-feeb-4a4b-b8e7-73f6390e4b1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""33f3ba6f-0b2f-4b3c-9deb-dafb29f6c821"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseHands"",
+                    ""type"": ""Button"",
+                    ""id"": ""b7e8ec83-511c-43dd-8df5-8398bd49d0c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -507,6 +534,67 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""action"": ""Alpha4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d4b3480-a0cc-410d-b072-6cfee0b61bfc"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUpItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5db8559-ee81-4d7c-bf19-88a67098c5c4"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""488ec472-ced9-43f4-a86b-3290678326ea"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseHands"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""9fa89919-1f9a-4c21-be59-7762041e9598"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""847ff97d-5a6d-4d75-a473-d6042c6e727e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""74755527-2c86-42de-b8dc-5ab4e8d014c4"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -534,6 +622,12 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         m_Player_Alpha3 = m_Player.FindAction("Alpha3", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_Alpha4 = m_Player.FindAction("Alpha4", throwIfNotFound: true);
+        m_Player_PickUpItem = m_Player.FindAction("PickUpItem", throwIfNotFound: true);
+        m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
+        m_Player_UseHands = m_Player.FindAction("UseHands", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_OpenInventory = m_UI.FindAction("OpenInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -612,6 +706,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Alpha3;
     private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_Alpha4;
+    private readonly InputAction m_Player_PickUpItem;
+    private readonly InputAction m_Player_Throw;
+    private readonly InputAction m_Player_UseHands;
     public struct PlayerActions
     {
         private @DefaultInput m_Wrapper;
@@ -635,6 +732,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         public InputAction @Alpha3 => m_Wrapper.m_Player_Alpha3;
         public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @Alpha4 => m_Wrapper.m_Player_Alpha4;
+        public InputAction @PickUpItem => m_Wrapper.m_Player_PickUpItem;
+        public InputAction @Throw => m_Wrapper.m_Player_Throw;
+        public InputAction @UseHands => m_Wrapper.m_Player_UseHands;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -701,6 +801,15 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Alpha4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha4;
                 @Alpha4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha4;
                 @Alpha4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAlpha4;
+                @PickUpItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUpItem;
+                @PickUpItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUpItem;
+                @PickUpItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUpItem;
+                @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @UseHands.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseHands;
+                @UseHands.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseHands;
+                @UseHands.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseHands;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -762,10 +871,52 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Alpha4.started += instance.OnAlpha4;
                 @Alpha4.performed += instance.OnAlpha4;
                 @Alpha4.canceled += instance.OnAlpha4;
+                @PickUpItem.started += instance.OnPickUpItem;
+                @PickUpItem.performed += instance.OnPickUpItem;
+                @PickUpItem.canceled += instance.OnPickUpItem;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
+                @UseHands.started += instance.OnUseHands;
+                @UseHands.performed += instance.OnUseHands;
+                @UseHands.canceled += instance.OnUseHands;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_OpenInventory;
+    public struct UIActions
+    {
+        private @DefaultInput m_Wrapper;
+        public UIActions(@DefaultInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenInventory => m_Wrapper.m_UI_OpenInventory;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @OpenInventory.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenInventory;
+                @OpenInventory.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenInventory;
+                @OpenInventory.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenInventory;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OpenInventory.started += instance.OnOpenInventory;
+                @OpenInventory.performed += instance.OnOpenInventory;
+                @OpenInventory.canceled += instance.OnOpenInventory;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -787,5 +938,12 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         void OnAlpha3(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
         void OnAlpha4(InputAction.CallbackContext context);
+        void OnPickUpItem(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
+        void OnUseHands(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnOpenInventory(InputAction.CallbackContext context);
     }
 }

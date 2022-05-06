@@ -31,6 +31,10 @@ public class InputManager : MonoBehaviour
     private InputAction _alpha3;
     private InputAction _alpha4;
     private InputAction _use;
+    private InputAction _pickupItem;
+    private InputAction _throw;
+    private InputAction _useHands;
+    private InputAction _openInventory;
 
     #endregion
 
@@ -61,6 +65,10 @@ public class InputManager : MonoBehaviour
     private bool _alpha3IsTrigger;
     private bool _alpha4IsTrigger;
     private bool _useIsTrigger;
+    private bool _pickupItemIsTrigger;
+    private bool _throwIsTrigger;
+    private bool _useHandsIsTrigger;
+    private bool _openInventoryIsTrigger;
 
     #endregion
 
@@ -159,6 +167,28 @@ public class InputManager : MonoBehaviour
         get => _useIsTrigger;
     }
 
+    public bool PickupItemIsTrigger
+    {
+        get => _pickupItemIsTrigger;
+    }
+
+    public bool TrowIsTrigger
+    {
+        get => _throwIsTrigger;
+    }
+
+    public bool UseHandsIsTrigger
+    {
+        get => _useHandsIsTrigger;
+    }
+
+    public bool OpenInventoryIsTrigger
+    {
+        get => _openInventoryIsTrigger;
+    }
+
+    public InputAction ShootAction => _shoot;
+
     #endregion
 
 
@@ -202,6 +232,12 @@ public class InputManager : MonoBehaviour
         _alpha4IsTrigger = _alpha4.triggered;
 
         _useIsTrigger = _use.triggered;
+        _pickupItemIsTrigger = _pickupItem.triggered;
+        _throwIsTrigger = _throw.triggered;
+        _useHandsIsTrigger = _useHands.triggered;
+
+        _openInventoryIsTrigger = _openInventory.triggered;
+
     }
 
     #endregion
@@ -229,19 +265,12 @@ public class InputManager : MonoBehaviour
         _alpha3 = _playerInput.actions["Alpha3"];
         _alpha4 = _playerInput.actions["Alpha4"];
         _use = _playerInput.actions["Use"];
+        _pickupItem = _playerInput.actions["PickupItem"];
+        _throw = _playerInput.actions["Throw"];
+        _useHands = _playerInput.actions["UseHands"];
+        _openInventory = _playerInput.actions["OpenInventory"];
     }
 
     #endregion
 
-    #region - Enable/Disable
-
-    private void OnEnable()
-    {
-    }
-
-    private void OnDisable()
-    {
-    }
-
-    #endregion
 }

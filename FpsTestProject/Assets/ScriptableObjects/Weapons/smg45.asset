@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: smg45
   _id: 3
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: d651681e74b27084198a0d1214eca03a, type: 3}
+  _widthTiles: 3
+  _heightTiles: 2
+  _itemPrefab: {fileID: 7116268884664267407, guid: 5d2285b8c22ecee45bde78b80f10bf82, type: 3}
   _prefab: {fileID: 2805770137348759871, guid: c3de32f328359264b897de4454c8a2cb, type: 3}
   _clipSize: 30
   _clipCount: 5

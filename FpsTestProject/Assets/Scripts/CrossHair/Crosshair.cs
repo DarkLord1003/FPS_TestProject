@@ -12,19 +12,31 @@ public class Crosshair:MonoBehaviour
     [SerializeField] private float _resizeSpeed;
     [SerializeField] private Color _color;
     [SerializeField] private bool _resizeble = true;
+    
 
     [Header("Input Manager")]
     [SerializeField] private InputManager _inputManager;
 
+    [Header("Layer Mask")]
+    [SerializeField] private LayerMask _itemMask;
+
+    private Camera _mainCamera;
+
     private Texture2D _textureCrosshair;
+    private Item _detectedItem;
+    private Color _oldColor;
     private float _spread;
     private bool _resizing = false;
     private bool _isShoot;
     private bool _isRealised = true;
+    private bool _detected;
+    private bool _hide;
 
     private void Awake()
     {
         _spread = _defaultSpread;
+        _mainCamera = Camera.main;
+        _oldColor = _color;
     }
 
     private void Start()
@@ -53,9 +65,39 @@ public class Crosshair:MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        RaycastHit hit;
+        Ray ray = _mainCamera.ScreenPointToRay(new Vector2(Screen.width / 2,Screen.height / 2));
+        if(Physics.Raycast(ray,out hit, 2.5f,_itemMask))
+        {
+            _detectedItem = hit.transform.GetComponent<ItemObject>().Item;
+
+            if (_detectedItem)
+            {
+                _detected = true;
+            }
+        }
+        else
+        {
+            _detectedItem = null;
+            _detected = false;
+        }
+
+    }
+
     private void OnGUI()
     {
         CreateTextureCrosshair();
+
+        if(_detectedItem != null && _detected)
+        {
+            _color = Color.red;
+        }
+        else if(!_hide && _detectedItem == null && !_detected)
+        {
+            _color = _oldColor;
+        }
 
         GUI.DrawTexture(new Rect(Screen.width / 2f - 2f, Screen.height / 2f - 1f, 2f, 2f), _textureCrosshair);
 
@@ -70,6 +112,16 @@ public class Crosshair:MonoBehaviour
 
         GUI.DrawTexture(new Rect((Screen.width / 2f) - _spread / 2f - 10, Screen.height / 2f - 1.2f,
                                                                    _height, _width), _textureCrosshair);
+
+        if (_detected && _detectedItem!=null)
+        {
+
+            GUI.color = new Color(0, 0, 0, 0.84f);
+            //GUI.Label(new Rect(Screen.width / 2 - 75 + 1, Screen.height / 2 - 50 + 1, 150, 20), "Press 'F' to pick '" + _detectedItem.NameItem + "'");
+            GUI.color = Color.green;
+            GUI.Label(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 50, 200, 20), "Press 'F' to pick '" + _detectedItem.NameItem + "'");
+
+        }
     }
 
     public void SetResizing(bool state)
@@ -79,7 +131,9 @@ public class Crosshair:MonoBehaviour
 
     public void HideCrosshair(bool hide)
     {
-        if (hide)
+        _hide = hide;
+
+        if (_hide)
         {
             _color.a = 0f;
         }
@@ -87,6 +141,7 @@ public class Crosshair:MonoBehaviour
         {
             _color.a = 0.5f;
         }
+
     }
     private void CreateTextureCrosshair()
     {

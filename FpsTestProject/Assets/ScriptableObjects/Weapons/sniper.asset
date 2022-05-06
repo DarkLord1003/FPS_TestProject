@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: sniper
   _id: 4
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: c799ef66ec4471546b53748b683c5fd1, type: 3}
+  _widthTiles: 4
+  _heightTiles: 2
+  _itemPrefab: {fileID: 0}
   _prefab: {fileID: 4616983751569932422, guid: 88c2060bca3945345994dcf42f345c17, type: 3}
   _clipSize: 7
   _clipCount: 5

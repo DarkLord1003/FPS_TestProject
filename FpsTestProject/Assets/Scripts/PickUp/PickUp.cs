@@ -7,8 +7,8 @@ public class PickUp : MonoBehaviour
     [Header("Input Manager")]
     [SerializeField] private InputManager _inputManager;
 
-    [Header("Inventory")]
-    [SerializeField] private Inventory _inventory;
+    [Header("Inventory Grid")]
+    [SerializeField] private ItemGrid _itemGrid;
 
     [Header("Layer Mask")]
     [SerializeField] private LayerMask _itemLayer;
@@ -19,10 +19,12 @@ public class PickUp : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Camera _camera;
 
-    private void Awake()
-    {
-        _inventory = GetComponent<Inventory>();
-    }
+    [Header("CanVas Transform")]
+    [SerializeField] private Transform _canvasTransform;
+
+    [Header("Prefab Item")]
+    [SerializeField] private GameObject _prefabItem;
+
     private void Update()
     {
         PickUpItem();
@@ -30,18 +32,36 @@ public class PickUp : MonoBehaviour
 
     private void PickUpItem()
     {
-        if (_inputManager.UseIsTrigger)
+        if (_inputManager.PickupItemIsTrigger)
         {
             Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
             RaycastHit hit;
             if (Physics.Raycast(ray,out hit, _rayRange, _itemLayer))
             {
-                Gun gun = hit.transform.GetComponent<ItemObject>().Item as Gun;
+                Item item = hit.transform.GetComponent<ItemObject>().Item;
 
-                if (gun)
+                if (item)
                 {
-                    _inventory.AddItem(gun);
-                    Destroy(hit.transform.gameObject);
+                    Vector2Int? positionForNewItem = _itemGrid.SerachSpaceForItem(item);
+
+                    Debug.Log(positionForNewItem);
+                    if (positionForNewItem != null)
+                    {
+                        Vector2Int position = positionForNewItem.GetValueOrDefault();
+
+                        InventoryItem inventoryItem = Instantiate(_prefabItem).GetComponent<InventoryItem>();
+                        inventoryItem.RectTransform.SetParent(_canvasTransform);
+
+                        inventoryItem.SetItem(item);
+
+                        bool compled =_itemGrid.PlaceItem(inventoryItem, position.x, position.y);
+
+                        if (compled)
+                        {
+                            Destroy(hit.transform.gameObject);
+                        }
+
+                    }
                 }
             }
         }
