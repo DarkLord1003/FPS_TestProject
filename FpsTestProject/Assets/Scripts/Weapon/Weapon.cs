@@ -6,17 +6,17 @@ using static ModelSettings;
 public abstract class Weapon:MonoBehaviour
 {
     [Header("Camera")]
-    [SerializeField] protected Camera ScopeCamera;
+    protected Camera ScopeCamera;
 
     [Header("Name Gun")]
     [SerializeField] protected string NameGun;
 
     [Header("Hands")]
-    [SerializeField] protected Transform HandsTransform;
+    protected Transform HandsTransform;
     protected Vector3 HandsStartPosition;
 
     [Header("InputManager")]
-    [SerializeField] protected InputManager InputManager;
+    protected InputManager InputManager;
 
     [Header("Camera Options")]
     [SerializeField] protected float CameraZoomSpeed;
@@ -33,7 +33,7 @@ public abstract class Weapon:MonoBehaviour
     protected bool CanShoot;
 
     [Header("Crosshair")]
-    [SerializeField] protected Crosshair WeaponCrosshair;
+    protected Crosshair WeaponCrosshair;
 
     [Header("Settings")]
     [SerializeField] protected WeaponSettings WeaponSettings;
@@ -51,7 +51,7 @@ public abstract class Weapon:MonoBehaviour
     [SerializeField] protected ParticleSystem MuzzleFlash;
 
     [Header("Animator")]
-    [SerializeField] protected Animator ArmsAnimator;
+    protected Animator ArmsAnimator;
 
     [Header("States")]
     protected bool IsReloading;
@@ -69,5 +69,6 @@ public abstract class Weapon:MonoBehaviour
     protected abstract void AnimationStanceCheck();
     protected abstract void CheckAiming();
     protected abstract void CheckCrosshair();
+    protected abstract void Init();
     protected abstract IEnumerator AutoReload();
 }

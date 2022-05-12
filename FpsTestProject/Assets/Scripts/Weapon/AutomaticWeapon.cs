@@ -14,6 +14,10 @@ public class AutomaticWeapon : Weapon
 
     private bool _realisedAim;
 
+    private void Awake()
+    {
+        Init();
+    }
     private void Start()
     {
         ObjectPool.CreatePool(BulletPrefab, "Automatic_Bullet", 30, true);
@@ -209,6 +213,15 @@ public class AutomaticWeapon : Weapon
         {
             IsReloading = false;
         }
+    }
+
+    protected override void Init()
+    {
+        ScopeCamera = GameObject.FindGameObjectWithTag("ScopeCamera").GetComponent<Camera>();
+        HandsTransform = GameObject.Find("WeaponHolder").transform;
+        InputManager = FindObjectOfType<InputManager>();
+        ArmsAnimator = GetComponentInParent<Animator>();
+        WeaponCrosshair = FindObjectOfType<Crosshair>();
     }
 
     protected override IEnumerator AutoReload()

@@ -25,6 +25,12 @@ public class InventoryController : MonoBehaviour
         set => _selectedGrid = value;
     }
 
+    public InventoryItem SelectedInventoryItem
+    {
+        get => _selectedInventoryItem;
+        set => _selectedInventoryItem = value;
+    }
+
     private void Awake()
     {
         _highLighter = GetComponent<HighLighter>();
@@ -55,6 +61,8 @@ public class InventoryController : MonoBehaviour
             _selectedGrid = null;
         }
 
+        DropItem();
+
         if (_selectedGrid == null)
         {
             _highLighter.SetVisible(false);
@@ -76,10 +84,18 @@ public class InventoryController : MonoBehaviour
 
         if (_selectedInventoryItem == null)
         {
+            SlotForWeapon slotForWeapon = _selectedGrid.GetComponent<SlotForWeapon>();
+
+            if (slotForWeapon)
+            {
+                EventManager.Instance.PostNotification(Event_Type.Slot_Placement, this, null);
+            }
+
             _selectedInventoryItem = _selectedGrid.GetItem(tileGridPosition.x, tileGridPosition.y);
         }
         else
         {
+
             bool completed = _selectedGrid.PlaceItem(_selectedInventoryItem, tileGridPosition.x, 
                                                      tileGridPosition.y,ref _inventoryItem);
             if (completed)
@@ -105,6 +121,20 @@ public class InventoryController : MonoBehaviour
             Vector2 position = Input.mousePosition;
             _selectedInventoryItem.RectTransform.position = position;
 
+        }
+    }
+
+    private void DropItem()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_selectedInventoryItem && _selectedGrid==null)
+            {
+                InventoryItem itemForDrop = _selectedInventoryItem;
+                _selectedInventoryItem = null;
+
+                EventManager.Instance.PostNotification(Event_Type.DropItem_From_Inventory, this, itemForDrop);
+            }
         }
     }
 

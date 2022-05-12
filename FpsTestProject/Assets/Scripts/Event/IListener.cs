@@ -17,7 +17,8 @@ public enum Event_Type
     Health_Change,
     Equiped_Weapon,
     Crosshair_Resizing,
-    Slot_Placement
+    Slot_Placement,
+    DropItem_From_Inventory
 }
 public interface IListener
 {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour,IListener
 {
     [Header("Parent")]
     [SerializeField] private Transform _parent;
@@ -10,11 +10,12 @@ public class Inventory : MonoBehaviour
     [Header("Equipment Manager")]
     [SerializeField] private EquipmentManager _equipmentManager;
 
-    [Header("Item Grid")]
-    [SerializeField] private ItemGrid _itemGrid;
+    [Header("Inventory Contoller")]
+    [SerializeField] private InventoryController _inventoryController;
 
     private Gun[] _weapons;
-
+    private Gun _currentEqupedGun;
+    private bool _isListener = false;
     public Gun[] Weapons
     {
         get => _weapons;
@@ -24,6 +25,12 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         _weapons = new Gun[4];
+
+        if (!_isListener)
+        {
+            EventManager.Instance.AddListener(Event_Type.DropItem_From_Inventory, this);
+            _isListener = true;
+        }
     }
 
     public void AddItem(Gun item)
@@ -40,22 +47,37 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void AddItem(Gun gun,ItemGrid selectedSlot,int index)
+    public void AddItem(Gun gun,int index)
     {
         if (index < 0 || index > _weapons.Length)
             return;
 
-        if(_weapons[index] != null)
+        if (gun == null)
         {
-            _equipmentManager.CurrentEqupedWeapon = _equipmentManager.GetWeapon(_weapons[index]);
-            _weapons[index] = gun;
-            _equipmentManager.Eqiped(index);
+            Debug.Log("Yes");
+            int slot = _inventoryController.SelectedGrid.GetComponent<SlotForWeapon>().IndexSlot;
+            ReturnWeaponToInventory(slot);
+            return;
         }
 
-        _weapons[index] = gun;
-        _equipmentManager.UniquipedWeapon();
-        _equipmentManager.NextEqupedWeapon = _equipmentManager.GetWeapon(_weapons[index]);
+        if (_weapons[index] != null)
+        {
+            Equiped(gun,index);
+            return;
+        }
 
+        Equiped(gun, index);
+    }
+
+    private void Equiped(Gun gun, int index)
+    {
+        gun.IndexOfTheSlotTheItem = index;
+        _weapons[index] = gun;
+        _equipmentManager.NextEqupedWeapon = _equipmentManager.GetWeapon(_weapons[index]);
+        _equipmentManager.UniquipedWeapon();
+        _equipmentManager.SetAnimationState(state: gun.ID);
+        _currentEqupedGun = gun;
+        StartCoroutine(Delay(_currentEqupedGun));
     }
 
     public void RemoveItem(Gun item)
@@ -95,6 +117,16 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private void ReturnWeaponToInventory(int slot)
+    {
+        Debug.Log("Current Weapon: " + _equipmentManager.CurrentEqupedWeapon);
+        _equipmentManager.UniquipedWeapon();
+        _equipmentManager.SetAnimationState(state: 0);
+        _currentEqupedGun = _weapons[slot];
+        StartCoroutine(Delay(_currentEqupedGun));
+        _weapons[slot] = null;
+    }
+
     private IEnumerator DelayThrowItem(Item item)
     {
         yield return new WaitForSeconds(0.5f);
@@ -103,4 +135,38 @@ public class Inventory : MonoBehaviour
 
         yield break;
     }
+
+    private IEnumerator Delay(Gun gun)
+    {
+        yield return new WaitForSeconds(1f);
+        _equipmentManager.CurrentEqupedWeapon = _equipmentManager.GetWeapon(gun);
+    }
+
+    public void OnEvent(Event_Type eventType, Component sender, Object param = null)
+    {
+        InventoryItem item = (InventoryItem)param;
+
+        if (item)
+        {
+            ThrowItem(item.Item);
+            Destroy(item.gameObject);
+        }
+    }
+
+    #region - OnEnable/Disable -
+
+    private void OnEnable()
+    {
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.AddListener(Event_Type.DropItem_From_Inventory, this);
+            _isListener = true;
+        }
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.RemoveListener(Event_Type.DropItem_From_Inventory, this);
+    }
+    #endregion
 }

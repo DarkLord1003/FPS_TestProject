@@ -10,19 +10,21 @@ public class SlotForWeapon : MonoBehaviour,IListener
     private ItemGrid _itemGrid;
     private int _indexSlot;
 
+    public int IndexSlot => _indexSlot;
+
+
     private void Awake()
     {
         _itemGrid = GetComponent<ItemGrid>();
         _indexSlot = GetComponent<RectTransform>().GetSiblingIndex() - 1;
     }
 
-    public void PlaceInSlot(Gun gun,ItemGrid selectedSlot)
+    public void PlaceInSlot(Gun gun)
     {
         if (_inventory == null)
             return;
 
-        gun.IndexOfTheSlotTheItem = _indexSlot;
-        _inventory.AddItem(gun,selectedSlot,_indexSlot);
+        _inventory.AddItem(gun,_indexSlot);
     }
 
 
@@ -31,15 +33,10 @@ public class SlotForWeapon : MonoBehaviour,IListener
         if (_itemGrid.IsActive == false)
             return;
 
-        InventoryController inventoryController = (InventoryController)sender;
-
         Item item = (Item)param;
         Gun gun = (Gun)item;
 
-        if (gun && inventoryController)
-        {
-            PlaceInSlot(gun,inventoryController.SelectedGrid);
-        }
+        PlaceInSlot(gun);
     }
 
 

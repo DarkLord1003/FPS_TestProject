@@ -18,6 +18,14 @@ public class EquipmentManager : MonoBehaviour,IListener
     [Header("Parent")]
     [SerializeField] private Transform _parent;
 
+    private Weapon _currentEqupedWeapon;
+    private Gun _currentEquipedGun;
+    private Weapon _nextEqupedWeapon;
+    private Item item;
+    private int _currentWeaponSlotActive = -1;
+    private int _state = 0;
+    private bool _canEqupedWeapon;
+
     public EquipmentManager EquipedManager => this;
 
     public Weapon CurrentEqupedWeapon
@@ -35,14 +43,11 @@ public class EquipmentManager : MonoBehaviour,IListener
     public Gun CurrentEqupedGun => _currentEquipedGun;
     public Animator PlayerAnimator => _playerAnimator;
     public Weapon[] Weapons => _weapons;
+    public int CurrentWeaponSlotActive
+    {
+        set => _currentWeaponSlotActive = value;
+    }
 
-    private Weapon _currentEqupedWeapon;
-    private Gun _currentEquipedGun;
-    private Weapon _nextEqupedWeapon;
-    private Item item;
-    private int _currentlyWeaponStyle = 2;
-    private int _state = 0;
-    private bool _canEqupedWeapon;
 
     private void Start()
     {
@@ -73,11 +78,12 @@ public class EquipmentManager : MonoBehaviour,IListener
 
         if (_inputManager.TrowIsTrigger)
         {
-            if (_currentEquipedGun)
+            if (_currentEqupedWeapon)
             {
+                Debug.Log((Gun)_inventory.GetItem(_currentWeaponSlotActive));
                 UniquipedWeapon();
-                _currentlyWeaponStyle = 2;
-                _inventory.RemoveItem(_currentEquipedGun);
+                _currentWeaponSlotActive = -1;
+                _inventory.RemoveItem((Gun)_inventory.GetItem(_currentWeaponSlotActive));
                 _playerAnimator.SetInteger("CurrentWeapon", 0);
                 StartCoroutine(DelayTrhow(_currentEquipedGun));
             }
@@ -85,10 +91,10 @@ public class EquipmentManager : MonoBehaviour,IListener
 
         if (_inputManager.UseHandsIsTrigger)
         {
-            if (_currentlyWeaponStyle != 2)
+            if (_currentWeaponSlotActive != -2)
             {
                 UniquipedWeapon();
-                _currentlyWeaponStyle = 2;
+                _currentWeaponSlotActive = -2;
                 StartCoroutine(DelayEqupedHands());
                 _playerAnimator.SetInteger("CurrentWeapon", 0);
             }
@@ -101,20 +107,21 @@ public class EquipmentManager : MonoBehaviour,IListener
 
     public void Eqiped(int slotIndex)
     {
-        if (_currentlyWeaponStyle != 1)
+        if (_currentWeaponSlotActive != slotIndex)
         {
             item = _inventory.GetItem(slotIndex);
 
             if (item == null)
                 return;
 
+            _currentWeaponSlotActive = slotIndex;
             EquipedWeapon(item);
             UniquipedWeapon();
             SetAnimationState(item);
             StartCoroutine(DelayWeaponEquiped());
         }
     }
-    private void EquipedWeapon(Item item)
+    public void EquipedWeapon(Item item)
     {
         Gun gun = item as Gun;
 
@@ -146,7 +153,6 @@ public class EquipmentManager : MonoBehaviour,IListener
 
         if (gun)
         {
-            _currentlyWeaponStyle = (int)gun.WeaponStyle;
             _playerAnimator.SetInteger("CurrentWeapon", gun.ID);
         }
 

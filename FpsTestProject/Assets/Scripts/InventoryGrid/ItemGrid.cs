@@ -177,9 +177,9 @@ public class ItemGrid : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void Clear()
     {
-        for(int i = 0; i < _itemSlots.GetLength(0); i++)
+        for(int i = 0; i < _gridWidth; i++)
         {
-            for(int j = 0; j < _itemSlots.GetLength(1); j++)
+            for(int j = 0; j < _gridHeight; j++)
             {
                 _itemSlots[i, j] = null;
             }

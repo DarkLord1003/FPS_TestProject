@@ -242,7 +242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parent: {fileID: 1934168695}
   _equipmentManager: {fileID: 671148642}
-  _itemGrid: {fileID: 0}
+  _inventoryController: {fileID: 2058193393}
 --- !u!143 &58856087
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3503,7 +3503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38679248, g: 0.34118018, b: 0.34118018, a: 1}
+  m_Color: {r: 0.38679248, g: 0.34118018, b: 0.34118018, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

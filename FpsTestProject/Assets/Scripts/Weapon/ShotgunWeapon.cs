@@ -8,6 +8,10 @@ public class ShotgunWeapon : Weapon
     [SerializeField] private AudioType _audioTypeShoot;
     [SerializeField] private AudioType _audioTypeEmptyClip;
 
+    private void Awake()
+    {
+        Init();
+    }
     private void Start()
     {
         ObjectPool.CreatePool(BulletPrefab, "Spas12_Bullet", 10, true);
@@ -128,6 +132,15 @@ public class ShotgunWeapon : Weapon
                 }
             }
         }
+    }
+
+    protected override void Init()
+    {
+        ScopeCamera = GameObject.FindGameObjectWithTag("ScopeCamera").GetComponent<Camera>();
+        HandsTransform = GameObject.Find("WeaponHolder").transform;
+        InputManager = FindObjectOfType<InputManager>();
+        ArmsAnimator = GetComponentInParent<Animator>();
+        WeaponCrosshair = FindObjectOfType<Crosshair>();
     }
 
     private IEnumerator Reloading()

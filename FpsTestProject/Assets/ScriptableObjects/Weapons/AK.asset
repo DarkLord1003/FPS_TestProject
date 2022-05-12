@@ -15,8 +15,8 @@ MonoBehaviour:
   _name: AK
   _id: 2
   _icon: {fileID: 21300000, guid: 01dcb981b2163b24190a6b997ab45301, type: 3}
-  _height: 0
-  _width: 0
+  _widthTiles: 4
+  _heightTiles: 2
   _prefab: {fileID: 1934841642766352639, guid: afebb79790fd51849849333f801ce1f4, type: 3}
   _clipSize: 30
   _clipCount: 10

@@ -15,6 +15,8 @@ MonoBehaviour:
   _name: DesertEagle
   _id: 5
   _icon: {fileID: 0}
+  _widthTiles: 1
+  _heightTiles: 1
   _prefab: {fileID: 1085024384150614391, guid: e8fb1b3f01f4e6c41a0ec158b40b8794, type: 3}
   _clipSize: 12
   _clipCount: 10

@@ -14,6 +14,10 @@ public class SniperWeapon : Weapon,IListener
     private bool _realisedAim;
     private int _state = 0;
 
+    private void Awake()
+    {
+        Init();
+    }
     private void Start()
     {
         ObjectPool.CreatePool(BulletPrefab, "Sniper_Bullet", 10, true);
@@ -173,6 +177,15 @@ public class SniperWeapon : Weapon,IListener
         {
             WeaponCrosshair.HideCrosshair(false);
         }
+    }
+
+    protected override void Init()
+    {
+        ScopeCamera = GameObject.FindGameObjectWithTag("ScopeCamera").GetComponent<Camera>();
+        HandsTransform = GameObject.Find("WeaponHolder").transform;
+        InputManager = FindObjectOfType<InputManager>();
+        ArmsAnimator = GetComponentInParent<Animator>();
+        WeaponCrosshair = FindObjectOfType<Crosshair>();
     }
 
     #region - Coroutins -
